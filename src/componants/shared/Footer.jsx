@@ -9,7 +9,7 @@ const Footer = () => {
   <aside>
     <Image src={"/assets/logo.svg"} height={60} width={100} alt='Logo' />
     <p>
-      Car Doctor.
+      Car Doctor. 
       <br />
       Providing reliable tech since 1992
     </p>
