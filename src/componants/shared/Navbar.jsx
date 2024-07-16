@@ -1,7 +1,9 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { IoCartOutline, IoSearch } from "react-icons/io5";
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const navItems = [
@@ -27,6 +29,8 @@ const Navbar = () => {
     },
   ];
 
+  const session = useSession();
+  console.log(session);
   return (
     <div className=" bg-base-100 ">
       <div className="navbar container mx-auto">
@@ -93,9 +97,15 @@ const Navbar = () => {
           <a className="btn btn-outline btn-primary px-4 md:px-6 hover:text-white">
             Appointment
           </a>
-          <Link href={"/signin"} className="btn btn-primary">
-            Sign In
-          </Link>
+          {session.data ? (
+            <button onClick={() => signOut()} className="btn btn-primary">
+              Sign out
+            </button>
+          ) : (
+            <Link href={"/signin"} className="btn btn-primary">
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
     </div>

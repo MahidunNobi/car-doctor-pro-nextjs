@@ -1,10 +1,29 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { signIn } from "next-auth/react";
 import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
+  const router = useRouter();
+
+  const handleSignin = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    console.log(res);
+    if (res.status === 200) {
+      router.push("/");
+    }
+  };
   return (
     <div className=" container mx-auto px-3 my-6 flex justify-around items-center gap-3">
       <div className="hidden md:block">
@@ -19,7 +38,7 @@ const page = () => {
         <h2 className="text-3xl text-center font-semibold text-slate-500 mb-4">
           Sign In
         </h2>
-        <form className=" space-y-3">
+        <form className=" space-y-3" onSubmit={handleSignin}>
           {/* Email */}
           <div className="w-full">
             <label htmlFor="email"> Email </label>
@@ -69,4 +88,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
