@@ -1,16 +1,10 @@
 import React from "react";
 // import { services } from "@/lib/services";
 import ServicesCards from "@/componants/Cards/ServicesCards";
-
-const getServices = async () => {
-  const res = await fetch("http://localhost:3000/services/api/get-all");
-  const data = res.json();
-  return data;
-};
+import { getServices } from "@/services/getServices";
 
 const Services = async () => {
   const { data: services } = await getServices();
-  console.log(services?.length);
 
   return (
     <div className="text-slate-800 my-12">
