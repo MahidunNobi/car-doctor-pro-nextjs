@@ -1,9 +1,8 @@
 "use client";
+import SocialLogin from "@/componants/shared/SocialLogin";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 
 const page = () => {
   const handleSubmit = async (e) => {
@@ -76,17 +75,7 @@ const page = () => {
         </form>
         {/* --Social Links---- */}
         <span className="text-center block my-6 text-sm"> Or Sign up with</span>
-        <div className="flex gap-3 justify-center">
-          <button className="btn">
-            <FaFacebook size={20} className="text-[#3b5998]" />
-          </button>
-          <button className="btn">
-            <FaLinkedinIn size={20} className="text-[#0077B5] " />
-          </button>
-          <button className="btn">
-            <FcGoogle size={20} />
-          </button>
-        </div>
+        <SocialLogin />
 
         <p className="text-center mt-6">
           Already have an account?{" "}

@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/connectDB";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 
 const authOptions = "";
@@ -36,8 +37,32 @@ const handler = NextAuth({
         return currentUser;
       },
     }),
+    GoogleProvider({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+    }),
   ],
-  callbacks: [],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      try {
+        if (account.provider === "google") {
+          const { name, email, image } = user;
+          const db = await connectDB();
+          const userCollection = db.collection("users");
+          const exists = await userCollection.findOne({ email });
+          if (!exists) {
+            const res = await userCollection.insertOne(user);
+            return res;
+          } else {
+            return res;
+          }
+        }
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
   pages: {
     signIn: "/signin",
   },

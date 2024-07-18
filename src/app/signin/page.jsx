@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { signIn } from "next-auth/react";
-import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+
 import { useRouter } from "next/navigation";
+import SocialLogin from "@/componants/shared/SocialLogin";
 
 const Page = () => {
   const router = useRouter();
@@ -65,17 +65,7 @@ const Page = () => {
         </form>
         {/* --Social Links---- */}
         <span className="text-center block my-6 text-sm"> Or signin with</span>
-        <div className="flex gap-3 justify-center">
-          <button className="btn">
-            <FaFacebook size={20} className="text-[#3b5998]" />
-          </button>
-          <button className="btn">
-            <FaLinkedinIn size={20} className="text-[#0077B5] " />
-          </button>
-          <button className="btn">
-            <FcGoogle size={20} />
-          </button>
-        </div>
+        <SocialLogin />
 
         <p className="text-center mt-6">
           Don&apos;t have an account?{" "}
