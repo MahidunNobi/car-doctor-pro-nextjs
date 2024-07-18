@@ -30,7 +30,6 @@ const Navbar = () => {
   ];
 
   const session = useSession();
-  console.log(session);
   return (
     <div className=" bg-base-100 ">
       <div className="navbar container mx-auto">
