@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 const authOptions = "";
 const handler = NextAuth({
   // secret: process.env.NEXTAUTH_SECRET,
-  secret: process.env.NEXTAUTH_URL,
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
@@ -50,11 +50,12 @@ const handler = NextAuth({
           const db = await connectDB();
           const userCollection = db.collection("users");
           const exists = await userCollection.findOne({ email });
+          console.log(exists);
           if (!exists) {
             const res = await userCollection.insertOne(user);
             return res;
           } else {
-            return res;
+            return exists;
           }
         }
         return true;
