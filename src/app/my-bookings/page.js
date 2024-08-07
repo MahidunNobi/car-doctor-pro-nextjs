@@ -69,27 +69,29 @@ const Page = () => {
             </thead>
             <tbody>
               {/* row 1 */}
-              {bookings?.map(({ serviceTitle, _id, date, price }) => (
-                <tr key={_id}>
-                  <th>1</th>
-                  <td>{serviceTitle}</td>
-                  <td>{price}</td>
-                  <td>{date}</td>
-                  <td>
-                    <div className="flex items-center space-x-3">
-                      <Link href={`/my-bookings/update/${_id}`}>
-                        <button class="btn btn-primary">Edit</button>
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(_id)}
-                        class="btn btn-error"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {bookings?.map(
+                ({ serviceTitle, serviceID, _id, date, price }) => (
+                  <tr key={_id}>
+                    <th>1</th>
+                    <td>{serviceTitle}</td>
+                    <td>{price}</td>
+                    <td>{date}</td>
+                    <td>
+                      <div className="flex items-center space-x-3">
+                        <Link href={`/my-bookings/update/${_id}`}>
+                          <button class="btn btn-primary">Edit</button>
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(_id)}
+                          class="btn btn-error"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>

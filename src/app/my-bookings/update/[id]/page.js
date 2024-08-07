@@ -1,31 +1,47 @@
 "use client";
-import { getServiceDetails } from "@/services/getServices";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const Checkout = ({ params }) => {
   const { data } = useSession();
-  const [service, setService] = useState({});
+  const [booking, setBooking] = useState({});
+  const router = useRouter();
+
   const loadService = async () => {
-    const details = await getServiceDetails(params.id);
-    setService(details.data);
+    const res = await fetch(
+      `http://localhost:3000/my-bookings/api/booking/${params.id}`
+    );
+    const details = await res.json();
+    setBooking(details.data);
   };
-  const { _id, title, description, img, price, facility } = service || {};
+  const {
+    _id,
+    email,
+    name,
+    address,
+    phone,
+    date,
+    serviceTitle,
+    serviceID,
+    price,
+  } = booking || {};
 
   const handleBooking = async (event) => {
     event.preventDefault();
     const newBooking = {
-      email: data?.user?.email,
-      name: data?.user?.name,
+      email,
+      name,
       address: event.target.address.value,
       phone: event.target.phone.value,
       date: event.target.date.value,
-      serviceTitle: title,
-      serviceID: _id,
-      price: price,
+      serviceTitle,
+      serviceID,
+      price,
     };
 
     const resp = await fetch(
@@ -39,8 +55,11 @@ const Checkout = ({ params }) => {
       }
     );
     const response = await resp.json();
-    toast.success(response?.message);
-    event.target.reset();
+    if (response.modifiedCount > 0) {
+      toast.success(response?.message);
+      event.target.reset();
+      router.push("/my-bookings");
+    }
   };
 
   useEffect(() => {
@@ -51,7 +70,7 @@ const Checkout = ({ params }) => {
     <div className="container mx-auto">
       <ToastContainer />
       {/* Image */}
-      <div className="relative  h-72">
+      {/* <div className="relative  h-72">
         <Image
           className="absolute h-72 w-full left-0 top-0 object-cover"
           src={img}
@@ -65,7 +84,7 @@ const Checkout = ({ params }) => {
             Checkout {title}
           </h1>
         </div>
-      </div>
+      </div> */}
 
       <div className="my-12 bg-slate-300 p-12">
         <form onSubmit={handleBooking}>
@@ -75,9 +94,10 @@ const Checkout = ({ params }) => {
                 <span className="label-text">Name</span>
               </label>
               <input
-                defaultValue={data?.user?.name}
+                defaultValue={name}
                 type="text"
                 name="name"
+                readOnly
                 className="input input-bordered"
               />
             </div>
@@ -86,7 +106,7 @@ const Checkout = ({ params }) => {
                 <span className="label-text">Date</span>
               </label>
               <input
-                defaultValue={new Date().toISOString().split("T")[0]}
+                defaultValue={date}
                 type="date"
                 name="date"
                 className="input input-bordered"
@@ -97,9 +117,10 @@ const Checkout = ({ params }) => {
                 <span className="label-text">Email</span>
               </label>
               <input
-                defaultValue={data?.user?.email}
+                defaultValue={email}
                 type="text"
                 name="email"
+                readOnly
                 placeholder="email"
                 className="input input-bordered"
               />
@@ -121,6 +142,7 @@ const Checkout = ({ params }) => {
                 <span className="label-text">Phone</span>
               </label>
               <input
+                defaultValue={phone}
                 required
                 type="text"
                 name="phone"
@@ -133,6 +155,7 @@ const Checkout = ({ params }) => {
                 <span className="label-text">Present Address</span>
               </label>
               <input
+                defaultValue={address}
                 type="text"
                 name="address"
                 placeholder="Your Address"

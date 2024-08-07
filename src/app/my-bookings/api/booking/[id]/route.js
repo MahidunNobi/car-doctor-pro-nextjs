@@ -1,6 +1,24 @@
 import { connectDB } from "@/lib/connectDB";
 import { ObjectId } from "mongodb";
 
+export const GET = async (request, { params }) => {
+  const db = await connectDB();
+  const bookingsCollection = db.collection("bookings");
+  try {
+    console.log(params);
+    const booking = await bookingsCollection.findOne({
+      _id: new ObjectId(params.id),
+    });
+    return Response.json({ data: booking });
+  } catch (error) {
+    console.log(error);
+    return Response.json(
+      { message: "There was an error", error },
+      { status: 400 }
+    );
+  }
+};
+
 export const PATCH = async (request, { params }) => {
   const db = await connectDB();
   const bookingsCollection = db.collection("bookings");
