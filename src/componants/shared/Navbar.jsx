@@ -4,6 +4,7 @@ import Link from "next/link";
 import { IoCartOutline, IoSearch } from "react-icons/io5";
 import React from "react";
 import { signOut, useSession } from "next-auth/react";
+import { FaRegUser } from "react-icons/fa";
 
 const Navbar = () => {
   const navItems = [
@@ -32,8 +33,8 @@ const Navbar = () => {
       path: "/contact",
     },
   ];
-
   const session = useSession();
+  console.log(session);
   return (
     <div className=" bg-base-100 ">
       <div className="navbar container mx-auto">
@@ -101,9 +102,25 @@ const Navbar = () => {
             Appointment
           </a>
           {session.data ? (
-            <button onClick={() => signOut()} className="btn btn-primary">
-              Sign out
-            </button>
+            <div className="dropdown">
+              <div tabIndex={0} role="button" className="btn btn-primary m-1">
+                <FaRegUser size={22} />
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow right-0 border border-primary *:odd:border-b *:border-primary
+"
+              >
+                <li>
+                  <a>Item 1</a>
+                </li>
+                <li>
+                  <button onClick={() => signOut()} className="">
+                    Sign out
+                  </button>
+                </li>
+              </ul>
+            </div>
           ) : (
             <Link href={"/signin"} className="btn btn-primary">
               Sign In
